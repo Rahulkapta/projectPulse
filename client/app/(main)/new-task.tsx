@@ -103,9 +103,10 @@ export default function NewTaskScreen() {
 
     setTaskData(updatedData);
   };
-
+const [creating, setCreating] = useState<boolean>(false)
   // Submit the form: validate, call API, then navigate back on success
   const handleCreateTask = async () => {
+    setCreating(true)
     // Prevent submission without a selected project
     if (!selectedProject?._id) {
       Alert.alert("Error", "No project selected. Cannot create task.");
@@ -135,6 +136,7 @@ export default function NewTaskScreen() {
     try {
       const response = await api.post(`/${selectedProject._id}/tasks`, payload);
       if (response.status === 201) {
+        setCreating(false)
         Alert.alert("Success", "Task created successfully.", [
           { text: "OK", onPress: () => router.back() },
         ]);
@@ -254,6 +256,7 @@ export default function NewTaskScreen() {
       <View style={styles.footer}>
         <Button
           title="Create Task"
+          status={creating}
           onPress={handleCreateTask}
           disabled={!isFormValid}
           // variant="secondary"

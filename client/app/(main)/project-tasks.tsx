@@ -19,8 +19,9 @@ import TaskCard from "@/components/TaskCard";
 import { Icons } from "@/assets/icons";
 
 import api from "@/utils/api";
-import { IUser } from "./(main)/people";
+
 import { AntDesign, Entypo } from "@expo/vector-icons";
+import { IUser } from "./people";
 
 /**
  * Interface representing attachments related to a ticket.
@@ -304,7 +305,7 @@ export default function ProjectTasksScreen() {
         </View>
 
         {/* Floating action button for adding new tasks */}
-        {canAddTask && (
+        {!loading && canAddTask && (
           <View style={styles.floatingButton}>
             <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
               <Entypo name="plus" size={24} color="white" />
