@@ -79,7 +79,7 @@ export default function LoginScreen() {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.appTitle}>TMS</Text>
+        <Text style={styles.appTitle}>Project Pulse</Text>
         <Text style={styles.title}>Welcome Back!</Text>
         <Text style={styles.subtitle}>Please login to continue</Text>
         <TextInput
@@ -93,7 +93,7 @@ export default function LoginScreen() {
         />
         <TextInput
           style={styles.input}
-          placeholder="OTP Pin"
+          placeholder="Secret Pin"
           placeholderTextColor="#999"
           secureTextEntry={true}
           value={otpPin}

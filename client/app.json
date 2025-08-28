@@ -46,12 +46,12 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "e53ad474-eb64-40bb-8e4f-075c8560d632"
+        "projectId": "23fb6169-7ee2-4084-8f49-feb002ced2bd"
       }
     },
-    "owner": "irahulkapta",
+    "owner": "rahulkapta",
     "updates": {
-      "url": "https://u.expo.dev/e53ad474-eb64-40bb-8e4f-075c8560d632"
+      "url": "https://u.expo.dev/23fb6169-7ee2-4084-8f49-feb002ced2bd"
     }
   }
 }

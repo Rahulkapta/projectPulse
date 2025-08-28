@@ -156,6 +156,7 @@ export function useTaskDetail() {
   // Add new comment to task
   async function handleAddComment() {
     const trimmed = newComment.trim();
+    setNewComment("")
     if (!trimmed) {
       Alert.alert("Validation", "Please enter a comment before sending.");
       return;
@@ -164,7 +165,7 @@ export function useTaskDetail() {
       const payload = { text: trimmed };
       const res = await api.post(`/${task._id}/comments`, payload);
       if (res.status === 201 || res.status === 200) {
-        setNewComment("");
+        Alert.alert("Comment added successfully", trimmed);
       } else {
         Alert.alert("Error", res.data.message || "Failed to post comment");
       }
