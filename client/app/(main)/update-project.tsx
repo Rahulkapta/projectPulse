@@ -21,10 +21,11 @@ import EmployeeModal from "@/components/modals/EmployeeModal";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import api from "@/utils/api";
-import { IUser } from "./(main)/people";
+
 import { setSelectedProject } from "@/store/slices/projectSlice";
 import StatusModal from "@/components/modals/SelectModal";
 import DateRangePicker from "@/components/DateRangePicker";
+import { IUser } from "./people";
 
 export default function UpdateProjectScreen() {
   const dispatch = useDispatch();
@@ -221,8 +222,10 @@ export default function UpdateProjectScreen() {
     handleInputChange("manager", managerName);
   };
 
+  const [updating, setUpdating] = useState<boolean>(false)
   // PATCH update project to backend
   const updateProject = async () => {
+    setUpdating(true)
     if (!selectedProject?._id) {
       Alert.alert("Error", "No project selected to update.");
       return;
@@ -248,6 +251,7 @@ export default function UpdateProjectScreen() {
       );
 
       if (response.status === 200) {
+        setUpdating(false)
         Alert.alert(
           "Success",
           "Project updated successfully!",
@@ -544,6 +548,7 @@ export default function UpdateProjectScreen() {
       <View style={styles.footer}>
         <Button
           title="Update Project"
+          status={updating}
           onPress={handleUpdateProject}
           disabled={!isFormValid}
         />

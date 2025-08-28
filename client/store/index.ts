@@ -1,16 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import createSecureStore from 'redux-persist-expo-securestore';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import projectReducer from "./slices/projectSlice";
 import authReducer from './slices/authSlice';
 
-// Create secure storage
-const storage = createSecureStore();
+
 
 // Persist config for auth reducer
 const authPersistConfig = {
   key: 'auth',
-  storage,
+  storage: AsyncStorage,
   whitelist: ['user'] // specify what to persist from auth state
 };
 

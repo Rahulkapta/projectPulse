@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "divakar-app",
-    "slug": "divakar-app",
+    "name": "Project Pulse",
+    "slug": "project-pulse",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,7 +9,10 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +20,8 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.deepakyadav02.divakarapp"
+      "package": "com.deepakyadav02.divakarapp",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -42,8 +46,12 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "ea8ce8f2-a0f9-4634-9499-d2ce04c7f80d"
+        "projectId": "e53ad474-eb64-40bb-8e4f-075c8560d632"
       }
+    },
+    "owner": "irahulkapta",
+    "updates": {
+      "url": "https://u.expo.dev/e53ad474-eb64-40bb-8e4f-075c8560d632"
     }
   }
 }

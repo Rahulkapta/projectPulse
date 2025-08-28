@@ -3,7 +3,8 @@ import { Alert } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import api from "@/utils/api";
 import { IUser } from "@/app/(main)/people";
-import { TaskData } from "@/app/new-task";
+import { TaskData } from "@/app/(main)/new-task";
+
 
 
 export interface Comment {
@@ -122,8 +123,10 @@ export function useTaskDetail() {
     setTask(updated);
   }
 
+  const [updating, setUpdating] = useState(false)
   // Save updated task to API
   async function handleSaveTask() {
+    setUpdating(true)
     const payload = {
       title: task.title,
       description: task.description,
@@ -135,6 +138,7 @@ export function useTaskDetail() {
     };
     try {
       await api.patch(`/${projectId}/tasks/${task._id}`, payload);
+      setUpdating(false)
       Alert.alert("Success", "Task updated successfully", [
         {
           text: "OK",
@@ -192,5 +196,6 @@ export function useTaskDetail() {
     handleInputChange,
     handleSaveTask,
     handleAddComment,
+    updating
   };
 }

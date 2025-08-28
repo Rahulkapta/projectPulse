@@ -145,6 +145,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
+    fontFamily: Platform.OS === 'android' ? 'normal' : undefined,
+    color: '#000',
     backgroundColor: "#fff",
     paddingHorizontal: 18,
     paddingVertical: 14,

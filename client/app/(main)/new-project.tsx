@@ -151,10 +151,10 @@ export default function NewProjectScreen() {
     }
     setProjectData(updatedData);
   };
-
+const [creating, setcreating] = useState<boolean>(false)
   // Async handler to submit form data and create project via POST request
   const handleCreateProject = async () => {
-    // Validate required fields
+    setcreating(true);
     if (!isFormValid) {
       Alert.alert("Validation", "Please fill all required fields correctly.");
       return;
@@ -175,8 +175,16 @@ export default function NewProjectScreen() {
       const response = await api.post("/projects", payload);
 
       if (response.status === 201 || response.status === 200) {
-        Alert.alert("Success", "Project created successfully.");
-        router.back();
+        setcreating(false);
+        Alert.alert("Success", "Project created successfully.", [
+          {
+            text: "OK",
+            
+            onPress: () => {
+              router.back();
+            },
+          },
+        ]);
       } else {
         Alert.alert(
           "Error",
@@ -218,14 +226,11 @@ export default function NewProjectScreen() {
         <View style={styles.content}>
           {/* Header with back button */}
           <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => router.back()}
-            >
+            <TouchableOpacity onPress={() => router.back()}>
               <Entypo name="cross" size={28} color="black" />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>New Project</Text>
-            <View style={{width:24}}></View>
-
+            <View style={{ width: 24 }}></View>
           </View>
 
           {/* Form Fields */}
@@ -251,7 +256,7 @@ export default function NewProjectScreen() {
                 }
               />
             </View>
- {/* Dates Section */}
+            {/* Dates Section */}
             <DateRangePicker
               startDate={projectData.startDate}
               endDate={projectData.endDate}
@@ -392,6 +397,7 @@ export default function NewProjectScreen() {
       <View style={styles.footer}>
         <Button
           title="Create Project"
+          status = {creating}
           onPress={handleCreateProject}
           disabled={!isFormValid}
         />

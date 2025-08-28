@@ -1,26 +1,29 @@
-import React from 'react';
+import React from "react";
 import {
-    StyleSheet,
-    Text,
-    TextStyle,
-    TouchableOpacity,
-    ViewStyle,
-} from 'react-native';
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 
 interface ButtonProps {
   title: string;
+  status: boolean;
   onPress: () => void;
   disabled?: boolean;
-  variant?: 'primary' | 'secondary';
+  variant?: "primary" | "secondary";
   style?: ViewStyle;
   textStyle?: TextStyle;
 }
 
 export default function Button({
+  status,
   title,
   onPress,
   disabled = false,
-  variant = 'primary',
+  variant = "primary",
   style,
   textStyle,
 }: ButtonProps) {
@@ -28,23 +31,29 @@ export default function Button({
     <TouchableOpacity
       style={[
         styles.button,
-        variant === 'primary' ? styles.primaryButton : styles.secondaryButton,
+        variant === "primary" ? styles.primaryButton : styles.secondaryButton,
         disabled && styles.disabledButton,
         style,
       ]}
       onPress={onPress}
       disabled={disabled}
     >
-      <Text
-        style={[
-          styles.buttonText,
-          variant === 'primary' ? styles.primaryButtonText : styles.secondaryButtonText,
-          disabled && styles.disabledButtonText,
-          textStyle,
-        ]}
-      >
-        {title}
-      </Text>
+      {status ? (
+        <ActivityIndicator size="small" color="#fff" />
+      ) : (
+        <Text
+          style={[
+            styles.buttonText,
+            variant === "primary"
+              ? styles.primaryButtonText
+              : styles.secondaryButtonText,
+            disabled && styles.disabledButtonText,
+            textStyle,
+          ]}
+        >
+          {title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 }
@@ -53,31 +62,31 @@ const styles = StyleSheet.create({
   button: {
     height: 48,
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   primaryButton: {
-    backgroundColor: '#0c7ff2',
+    backgroundColor: "#0c7ff2",
   },
   secondaryButton: {
-    backgroundColor: '#f0f2f5',
+    backgroundColor: "#f0f2f5",
   },
   disabledButton: {
-    backgroundColor: '#d1d5db',
+    backgroundColor: "#d1d5db",
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 0.015,
   },
   primaryButtonText: {
-    color: '#ffffff',
+    color: "#ffffff",
   },
   secondaryButtonText: {
-    color: '#111418',
+    color: "#111418",
   },
   disabledButtonText: {
-    color: '#9ca3af',
+    color: "#9ca3af",
   },
-}); 
+});

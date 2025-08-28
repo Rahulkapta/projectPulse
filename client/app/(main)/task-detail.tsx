@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -41,6 +42,7 @@ export default function TaskDetailScreen() {
     handleInputChange,
     handleSaveTask,
     handleAddComment,
+    updating
   } = useTaskDetail();
 
   const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -54,6 +56,7 @@ export default function TaskDetailScreen() {
   const [isPriorityModalVisible, setIsPriorityModalVisible] = useState(false);
   const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
 
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -65,7 +68,11 @@ export default function TaskDetailScreen() {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Task Details</Text>
         <TouchableOpacity onPress={handleSaveTask} style={{ margin: 10 }}>
+          {updating ? (
+          <ActivityIndicator size="small" color="black" />
+        ) : (
           <Entypo name="check" size={24} color="black" />
+          )}
         </TouchableOpacity>
       </View>
 
@@ -163,7 +170,7 @@ export default function TaskDetailScreen() {
               const authorName = author
                 ? `${author.details.name.first} ${
                     author.details.name.last ?? ""
-                  }`.trim()
+                  }`.trim() 
                 : "Unknown User";
               return (
                 <View key={comment._id} style={styles.commentItem}>
