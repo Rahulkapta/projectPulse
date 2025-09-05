@@ -14,13 +14,13 @@ export class TicketRepository {
   }
 
   async findAllTask(projectId: string) {
-    return Ticket.find({projectId});
+    return Ticket.find({ projectId }).sort({ createdAt: -1 }).lean().exec();
   }
 
   async findTaskById(taskId: string) {
     return Ticket.findById(taskId);
   }
- 
+
   async deleteTaskById(taskId: string) {
     return Ticket.findByIdAndDelete(taskId);
   }
