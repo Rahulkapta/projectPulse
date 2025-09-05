@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   ActivityIndicator,
+  Animated,
+  Keyboard,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -42,7 +45,7 @@ export default function TaskDetailScreen() {
     handleInputChange,
     handleSaveTask,
     handleAddComment,
-    updating
+    updating,
   } = useTaskDetail();
 
   const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -56,7 +59,39 @@ export default function TaskDetailScreen() {
   const [isPriorityModalVisible, setIsPriorityModalVisible] = useState(false);
   const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
 
-  
+  const bottomAnim = useRef(new Animated.Value(5)).current;
+
+  useEffect(() => {
+    const showEvent =
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent =
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const onShow = (e: any) => {
+      const toValue = (e?.endCoordinates?.height ?? 250) + 8; // add a small gap
+      Animated.timing(bottomAnim, {
+        toValue,
+        duration: e?.duration ?? 250,
+        useNativeDriver: false,
+      }).start();
+    };
+    const onHide = (e: any) => {
+      Animated.timing(bottomAnim, {
+        toValue: 5,
+        duration: e?.duration ?? 200,
+        useNativeDriver: false,
+      }).start();
+    };
+
+    const subShow = Keyboard.addListener(showEvent, onShow);
+    const subHide = Keyboard.addListener(hideEvent, onHide);
+
+    return () => {
+      subShow.remove();
+      subHide.remove();
+    };
+  }, [bottomAnim]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -69,14 +104,19 @@ export default function TaskDetailScreen() {
         <Text style={styles.headerTitle}>Task Details</Text>
         <TouchableOpacity onPress={handleSaveTask} style={{ margin: 10 }}>
           {updating ? (
-          <ActivityIndicator size="small" color="black" />
-        ) : (
-          <Entypo name="check" size={24} color="black" />
+            <ActivityIndicator size="small" color="black" />
+          ) : (
+            <Entypo name="check" size={24} color="black" />
           )}
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 140 }}
+      >
         <View style={styles.content}>
           <View style={styles.form}>
             {/* Title */}
@@ -170,7 +210,7 @@ export default function TaskDetailScreen() {
               const authorName = author
                 ? `${author.details.name.first} ${
                     author.details.name.last ?? ""
-                  }`.trim() 
+                  }`.trim()
                 : "Unknown User";
               return (
                 <View key={comment._id} style={styles.commentItem}>
@@ -182,7 +222,9 @@ export default function TaskDetailScreen() {
                       )}
                     </Text>
                   </View>
-                  <View style={{ flexDirection: "column", width: 410, padding: 3 }}>
+                  <View
+                    style={{ flexDirection: "column", width: 410, padding: 3 }}
+                  >
                     <View style={{ flexDirection: "row", gap: 10 }}>
                       <Text style={styles.commentAuthor}>{authorName}</Text>
                       <Text style={styles.commentTime}>
@@ -199,7 +241,7 @@ export default function TaskDetailScreen() {
       </ScrollView>
 
       {/* Comment Input Section */}
-      <View style={styles.commentInput}>
+      <Animated.View style={[styles.commentInput, { bottom: bottomAnim }]}>
         <View style={styles.initialsCircle}>
           <Text style={styles.initialsText}>{CurrentUserInitials}</Text>
         </View>
@@ -212,11 +254,14 @@ export default function TaskDetailScreen() {
             multiline
             placeholderTextColor="#60768a"
           />
-          <TouchableOpacity style={styles.attachButton} onPress={handleAddComment}>
+          <TouchableOpacity
+            style={styles.attachButton}
+            onPress={handleAddComment}
+          >
             <Ionicons name="send" size={22} color="#4A90E2" />
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 }
@@ -322,7 +367,7 @@ const styles = StyleSheet.create({
   initialsCircle: {
     width: 48,
     height: 48,
-    borderRadius: 28, 
+    borderRadius: 28,
     backgroundColor: Colors.iconContainer.iconBackground,
     justifyContent: "center",
     alignItems: "center",
@@ -370,10 +415,14 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   commentInput: {
+    position: "absolute",
+    left: 0,
+    right: 0,
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
     paddingHorizontal: 16,
+    marginBottom:18,
     paddingVertical: 12,
     backgroundColor: "#ffffff",
   },

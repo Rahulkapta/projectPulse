@@ -13,12 +13,15 @@ export class ProjectRepository {
   }
 
   async getAllProjects() {
-    return Project.find({});
+    return Project.find({}).sort({ createdAt: -1 }).lean().exec();
   }
   async getProjectsByAssignedPerson(userId: string) {
     return Project.find({
       assignedPeople: userId,
-    });
+    })
+      .sort({ createdAt: -1 })
+      .lean()
+      .exec();
   }
   async findById(_id: string) {
     return Project.findById({ _id });
